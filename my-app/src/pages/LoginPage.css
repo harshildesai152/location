@@ -1,0 +1,274 @@
+/* src/styles/LoginPage.css */
+
+/* Re-use variables from SignupPage.css or define here if this is a standalone component */
+:root {
+    --primary-purple: #8A2BE2; /* Matches your header bar */
+    --accent-blue-green-start: #20B2AA; /* Lightseagreen for button gradient start */
+    --accent-orange-end: #FF8C00; /* Darkorange for button gradient end */
+    --text-color-dark: #333;
+    --text-color-medium: #666;
+    --text-color-light: #999;
+    --border-color: #e0e0e0;
+    --card-bg: #fff;
+    --input-bg: #f9f9f9;
+    --focus-ring: rgba(138, 43, 226, 0.3); /* Primary purple with transparency */
+}
+
+/* Global styles for the page background and font */
+/* These might be in your main App.css or index.css, duplicating for self-containment */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f0f2f5; /* Light gray background */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Container for the entire login page (including top header if present) */
+.login-page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* Top Header Bar (if not already handled globally in App.css) */
+.top-header-bar {
+    width: 100%;
+    height: 50px; /* Adjust height as needed */
+    background-color: var(--primary-purple);
+    /* You might add content like a logo here */
+}
+
+/* Main content area containing the login card */
+.login-main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Center vertically in remaining space */
+    flex-grow: 1; /* Allow it to take up available space */
+    padding: 20px; /* Add some padding around the card */
+    width: 100%;
+}
+
+
+/* Login Card Styling */
+.login-card {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 40px 30px;
+    width: 100%;
+    max-width: 420px; /* Consistent with signup page */
+    text-align: center;
+}
+
+.login-icon {
+    background-color: rgba(138, 43, 226, 0.1); /* Light primary purple */
+    color: var(--primary-purple);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 25px;
+    font-size: 28px;
+}
+
+.login-title {
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--text-color-dark);
+    margin-bottom: 10px;
+}
+
+.login-subtitle {
+    font-size: 15px;
+    color: var(--text-color-medium);
+    margin-bottom: 30px;
+}
+
+/* Form Group Styling (similar to signup) */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-color-dark);
+    margin-bottom: 8px;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrapper .input-icon {
+    position: absolute;
+    left: 15px;
+    color: var(--text-color-light);
+    font-size: 17px;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 12px 15px 12px 45px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 16px;
+    color: var(--text-color-dark);
+    background-color: var(--input-bg);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-wrapper input::placeholder {
+    color: var(--text-color-light);
+    opacity: 0.8;
+}
+
+.input-wrapper input:focus {
+    outline: none;
+    border-color: var(--primary-purple);
+    box-shadow: 0 0 0 3px var(--focus-ring);
+    background-color: var(--card-bg);
+}
+
+/* Password Toggle Icon */
+.input-wrapper .toggle-password {
+    position: absolute;
+    right: 15px;
+    color: var(--text-color-light);
+    cursor: pointer;
+    font-size: 17px;
+    transition: color 0.2s;
+}
+
+.input-wrapper .toggle-password:hover {
+    color: var(--text-color-medium);
+}
+
+/* Forgot Password Link */
+.forgot-password-link {
+    display: block; /* Ensures it takes its own line */
+    text-align: right;
+    font-size: 14px;
+    color: var(--primary-purple);
+    text-decoration: none;
+    margin-top: -10px; /* Pull it up closer to the password field */
+    margin-bottom: 20px; /* Space between link and button */
+    font-weight: 500;
+}
+
+.forgot-password-link:hover {
+    text-decoration: underline;
+}
+
+/* Login Button */
+.login-button {
+    width: 100%;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 6px;
+    background: linear-gradient(to right, var(--accent-blue-green-start), var(--accent-orange-end));
+    color: #fff;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+    margin-top: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.login-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.login-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    background: linear-gradient(to right, #ccc, #bbb); /* Lighter gradient for disabled */
+}
+
+/* Footer Link (for signup) */
+.login-footer {
+    font-size: 15px;
+    color: var(--text-color-medium);
+    margin-top: 25px;
+}
+
+.login-footer .signup-link {
+    color: var(--primary-purple);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.login-footer .signup-link:hover {
+    text-decoration: underline;
+    color: var(--primary-purple);
+}
+
+/* Font Awesome adjustment if needed for vertical alignment */
+.fa-user, .fa-envelope, .fa-lock, .fa-eye-slash, .fa-eye {
+    vertical-align: middle;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 500px) {
+    .login-card {
+        margin: 20px;
+        padding: 30px 20px;
+    }
+
+    .login-title {
+        font-size: 22px;
+    }
+
+    .login-subtitle {
+        font-size: 14px;
+    }
+
+    .login-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+    }
+
+    .form-group label {
+        font-size: 13px;
+    }
+
+    .input-wrapper input {
+        padding: 10px 12px 10px 40px;
+        font-size: 15px;
+    }
+
+    .input-wrapper .input-icon,
+    .input-wrapper .toggle-password {
+        font-size: 15px;
+    }
+
+    .login-button {
+        padding: 12px 15px;
+        font-size: 16px;
+    }
+
+    .login-footer {
+        font-size: 14px;
+    }
+}

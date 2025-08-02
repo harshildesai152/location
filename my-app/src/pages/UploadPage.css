@@ -1,0 +1,400 @@
+/* General Page Layout */
+.upload-page-container {
+    display: flex;
+    min-height: 100vh; /* Full viewport height */
+    background-color: #f4f7f6; /* Light background for the whole page */
+    font-family: 'Inter', sans-serif; /* Consistent font */
+}
+
+/* Sidebar Styling (reused from MapPage for consistency) */
+.upload-sidebar {
+    width: 250px;
+    background-color: #ffffff; /* White background */
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05); /* Subtle shadow on the right */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Pushes logout to bottom */
+    align-items: center;
+}
+
+.upload-sidebar .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 40px;
+    padding: 10px 0;
+}
+
+.upload-sidebar .logo-icon {
+    background-color: #3498db; /* Blue background for icon */
+    border-radius: 50%;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.upload-sidebar .logo-icon .icon {
+    color: white;
+    font-size: 1.5em;
+}
+
+.upload-sidebar .logo-text {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #333;
+    margin: 0;
+}
+
+.upload-sidebar .welcome-text {
+    font-size: 1em;
+    color: #555;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.upload-sidebar .upload-navigation {
+    width: 100%;
+    flex-grow: 1; /* Allows navigation to take up available space */
+}
+
+.upload-sidebar .upload-navigation nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.upload-sidebar .upload-navigation nav ul li {
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.upload-sidebar .upload-navigation nav ul li a {
+    display: block;
+    padding: 12px 15px;
+    background-color: #f8f8f8; /* Light background for nav items */
+    border-radius: 8px;
+    color: #555;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    text-align: center;
+}
+
+.upload-sidebar .upload-navigation nav ul li a:hover {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.upload-sidebar .upload-navigation nav ul li.active a {
+    background-color: #3498db; /* Active blue */
+    color: white;
+    font-weight: 600;
+}
+
+.upload-sidebar .logout-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #555;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 15px 0;
+    border-top: 1px solid #eee;
+    width: 100%;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.upload-sidebar .logout-section .logout-icon {
+    font-size: 1.2em;
+}
+
+
+/* Main Content Area */
+.upload-main-content {
+    flex-grow: 1; /* Takes remaining width */
+    padding: 30px;
+}
+
+.upload-header-content {
+    margin-bottom: 30px;
+}
+
+.upload-header-content h1 {
+    font-size: 2.5em;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.upload-header-content p {
+    font-size: 1.1em;
+    color: #777;
+}
+
+.upload-cards-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* File upload card takes 2/3, info cards 1/3 */
+    gap: 30px;
+    align-items: start; /* Align cards to the top */
+}
+
+/* Base Card Styling */
+.upload-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Stronger shadow */
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.upload-card .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.upload-card .card-icon {
+    color: #3498db; /* Blue icon */
+    font-size: 1.5em;
+}
+
+.upload-card h2 {
+    font-size: 1.4em;
+    color: #333;
+    margin: 0;
+}
+
+.upload-card .card-description {
+    font-size: 0.95em;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+
+/* File Upload Card Specific */
+.file-upload-card {
+    grid-column: 1 / 2; /* Occupy the first column */
+}
+
+.drop-area {
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    padding: 40px 20px;
+    text-align: center;
+    color: #888;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+    margin-bottom: 25px;
+}
+
+.drop-area.drag-over {
+    border-color: #3498db;
+    background-color: #eaf6fd; /* Light blue background when dragging over */
+}
+
+.drop-area .drop-icon {
+    font-size: 3em;
+    color: #a0a0a0;
+    margin-bottom: 15px;
+}
+
+.drop-area p {
+    margin: 5px 0;
+    font-size: 1.05em;
+}
+
+.browse-button {
+    background-color: #f1f3f6; /* Light gray button */
+    color: #555;
+    border: 1px solid #ddd;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 15px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.browse-button:hover {
+    background-color: #e0e0e0;
+    border-color: #bbb;
+}
+
+.selected-file-name {
+    margin-top: 15px;
+    font-weight: 600;
+    color: #3498db;
+}
+
+.upload-button {
+    background-color: #28a745; /* Green upload button */
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: 600;
+    width: 100%; /* Full width button */
+    transition: background-color 0.3s ease;
+    margin-top: auto; /* Push to bottom of the card */
+}
+
+.upload-button:hover:not(:disabled) {
+    background-color: #218838; /* Darker green on hover */
+}
+
+.upload-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+/* Info Cards Container */
+.upload-info-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Space between the two info cards */
+    grid-column: 2 / 3; /* Occupy the second column */
+}
+
+/* Format Requirements Card Specific */
+.format-requirements-card ul {
+    list-style: none; /* Remove default bullets */
+    padding: 0;
+    margin: 0;
+}
+
+.format-requirements-card ul li {
+    margin-bottom: 15px;
+    font-size: 0.95em;
+    line-height: 1.4;
+    color: #444;
+}
+
+.format-requirements-card ul li strong {
+    color: #333;
+}
+
+/* Sample File Card Specific */
+.sample-file-card p {
+    margin-bottom: 15px;
+    font-size: 0.95em;
+    color: #666;
+}
+
+.sample-data {
+    background-color: #f8f8f8;
+    border: 1px solid #eee;
+    border-left: 5px solid #3498db; /* Blue left border */
+    padding: 15px;
+    margin-bottom: 25px;
+    font-family: 'monospace'; /* Monospace font for code-like text */
+    font-size: 0.9em;
+    white-space: pre-wrap; /* Preserve whitespace and wrap */
+    word-break: break-all; /* Break long words */
+    color: #444;
+}
+
+.download-sample-button {
+    background-color: #3498db; /* Blue download button */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.download-sample-button:hover {
+    background-color: #2980b9;
+}
+
+.view-map-button {
+    background-color: #6c757d; /* Gray view map button */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.view-map-button:hover {
+    background-color: #5a6268;
+}
+
+/* Media Queries for Responsiveness (Optional, but good practice) */
+@media (max-width: 1024px) {
+    .upload-cards-container {
+        grid-template-columns: 1fr; /* Stack cards vertically on smaller screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .upload-page-container {
+        flex-direction: column; /* Stack sidebar and main content */
+    }
+
+    .upload-sidebar {
+        width: 100%;
+        padding: 15px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        flex-direction: row; /* Layout sidebar items horizontally */
+        justify-content: space-between;
+        align-items: center;
+        position: sticky; /* Keep sidebar at top on scroll */
+        top: 0;
+        z-index: 100;
+    }
+
+    .upload-sidebar .logo-container {
+        margin-bottom: 0;
+    }
+
+    .upload-sidebar .upload-navigation {
+        display: none; /* Hide navigation on small screens, consider a mobile menu */
+    }
+
+    .upload-sidebar .welcome-text,
+    .upload-sidebar .logout-section {
+        display: none; /* Hide these on small screens */
+    }
+
+    .upload-main-content {
+        padding: 20px;
+    }
+
+    .upload-card {
+        padding: 20px;
+    }
+
+    .drop-area {
+        padding: 30px 15px;
+    }
+
+    .upload-button,
+    .download-sample-button,
+    .view-map-button {
+        padding: 12px 20px;
+        font-size: 0.95em;
+    }
+}
