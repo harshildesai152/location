@@ -2,10 +2,9 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs').promises;
 
-// Corrected: This should be a directory where the uploaded zip files will be temporarily stored
+
 const uploadDir = path.join(__dirname, '../uploads/zips');
 
-// Ensure upload directory exists
 (async () => {
   try {
     await fs.mkdir(uploadDir, { recursive: true });

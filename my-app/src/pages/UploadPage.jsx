@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'; // Import useEffect
+import React, { useState, useEffect } from 'react'; 
 import { useNavigate } from 'react-router-dom';
 import { FaUpload, FaFileAlt, FaMapMarkerAlt, FaDownload } from 'react-icons/fa';
 import './UploadPage.css';
+import { Link } from "react-router-dom";
 
 const UploadPage = () => {
     const navigate = useNavigate();
@@ -10,20 +11,20 @@ const UploadPage = () => {
     const [uploading, setUploading] = useState(false);
     const [uploadMessage, setUploadMessage] = useState('');
     const [isError, setIsError] = useState(false);
-    const [countdown, setCountdown] = useState(0); // New state for countdown
+    const [countdown, setCountdown] = useState(0); 
 
-    // useEffect to handle the countdown
+    
     useEffect(() => {
         if (countdown > 0) {
             const timer = setTimeout(() => {
                 setCountdown(countdown - 1);
-            }, 1000); // Decrement every second
-            return () => clearTimeout(timer); // Cleanup the timer
+            }, 1000); 
+            return () => clearTimeout(timer); 
         } else if (countdown === 0 && uploadMessage.includes('successfully') && !isError) {
-            // Only navigate if countdown reaches 0 AND upload was successful
+            
             navigate('/map');
         }
-    }, [countdown, uploadMessage, isError, navigate]); // Add navigate to dependency array
+    }, [countdown, uploadMessage, isError, navigate]); 
 
     const getCookie = (name) => {
         const value = `; ${document.cookie}`;
@@ -38,7 +39,7 @@ const UploadPage = () => {
             setSelectedFile(file);
             setUploadMessage('');
             setIsError(false);
-            setCountdown(0); // Reset countdown if a new file is selected
+            setCountdown(0); 
         }
     };
 
@@ -50,7 +51,7 @@ const UploadPage = () => {
             setSelectedFile(file);
             setUploadMessage('');
             setIsError(false);
-            setCountdown(0); // Reset countdown
+            setCountdown(0); 
         }
     };
 
@@ -70,6 +71,9 @@ const UploadPage = () => {
     const handleViewMapClick = () => {
         navigate('/map');
     };
+     const handleClick = () => {
+    navigate('/');
+  };
 
     const handleDownloadSample = () => {
         const sampleData = "Name,Latitude,Longitude\nSuria KLCC,3.157324,101.712198\nZoo Negara,3.2195416,101.75929564";
@@ -94,7 +98,7 @@ const UploadPage = () => {
         setUploading(true);
         setUploadMessage("Uploading...");
         setIsError(false);
-        setCountdown(0); // Ensure countdown is reset at the start of upload
+        setCountdown(0); 
 
         const formData = new FormData();
         formData.append('file', selectedFile);
@@ -116,17 +120,17 @@ const UploadPage = () => {
                 setUploadMessage(data.message || 'File uploaded successfully!');
                 setIsError(false);
                 setSelectedFile(null);
-                setCountdown(3); // Start countdown from 3
+                setCountdown(3); 
             } else {
                 setUploadMessage(data.message || 'Upload failed.');
                 setIsError(true);
-                setCountdown(0); // No countdown on error
+                setCountdown(0); 
             }
         } catch (error) {
             console.error('Error during upload:', error);
             setUploadMessage('Network error or server unreachable.');
             setIsError(true);
-            setCountdown(0); // No countdown on network error
+            setCountdown(0); 
         } finally {
             setUploading(false);
         }
@@ -139,20 +143,22 @@ const UploadPage = () => {
                     <div className="logo-icon">
                         <FaMapMarkerAlt className="icon" />
                     </div>
-                    <h1 className="logo-text">LocationHub</h1>
+                    <h1 className="logo-text" onClick={handleClick} style={{ cursor: 'pointer' }}>
+                     LocationHub
+                    </h1>
                 </div>
                 <div className="upload-navigation">
-                    <p className="welcome-text">Welcome, John Doe</p>
+                  
                     <nav>
                         <ul>
-                            <li><a href="/" onClick={(e) => { e.preventDefault(); navigate('/'); }}>Map</a></li>
+                            <li><a href="/" onClick={(e) => { e.preventDefault(); navigate('/map'); }}>Map</a></li>
                             <li className="active"><a href="/upload" onClick={(e) => { e.preventDefault(); navigate('/upload'); }}>Upload</a></li>
                         </ul>
                     </nav>
                 </div>
                 <div className="logout-section">
                     <FaFileAlt className="logout-icon" />
-                    <span>Logout</span>
+                    {/* <span>Logout</span> */}
                 </div>
             </aside>
 
@@ -163,7 +169,7 @@ const UploadPage = () => {
                 </header>
 
                 <div className="upload-cards-container">
-                    {/* File Upload Card */}
+                  
                     <div className="upload-card file-upload-card">
                         <div className="card-header">
                             <FaUpload className="card-icon" />
@@ -208,7 +214,7 @@ const UploadPage = () => {
                     </div>
 
                     <div className="upload-info-cards">
-                        {/* File Format Requirements Card */}
+                      
                         <div className="upload-card format-requirements-card">
                             <div className="card-header">
                                 <FaFileAlt className="card-icon" />
@@ -221,7 +227,7 @@ const UploadPage = () => {
                             </ul>
                         </div>
 
-                        {/* Sample File Card */}
+                      
                         <div className="upload-card sample-file-card">
                             <div className="card-header">
                                 <FaFileAlt className="card-icon" />

@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { FaMapMarkerAlt, FaPlus, FaTrash, FaFileUpload } from 'react-icons/fa'; // Import FaFileUpload
-import './MapPage.css'; // Assuming your CSS is in MapPage.css
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
+import { FaMapMarkerAlt, FaPlus, FaTrash, FaFileUpload } from 'react-icons/fa'; 
+import './MapPage.css'; 
+import { useNavigate } from 'react-router-dom'; 
 
-// Fix for default marker icons - ESSENTIAL for Leaflet to display markers correctly
+
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
@@ -14,38 +14,53 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
 });
 
-// Helper function to get a cookie by name
-const getCookie = (name) => {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(';').shift();
-  return null;
-};
+// // Helper function to get a cookie by name
+// const getCookie = (name) => {
+//   const value = `; ${document.cookie}`;
+//   const parts = value.split(`; ${name}=`);
+//   if (parts.length === 2) return parts.pop().split(';').shift();
+//   return null;
+// };
 
-// Component to control the map's view (zoom and center)
+function getCookie(name) {
+    let cookieArr = document.cookie.split(';');
+    
+    for (let i = 0; i < cookieArr.length; i++) {
+        let cookie = cookieArr[i].trim();
+        
+        
+        if (cookie.startsWith(name + '=')) {
+            return cookie.substring(name.length + 1);
+        }
+    }
+    
+    return null;  
+}
+
+
+
+
 const MapController = ({ center, zoom }) => {
-  const map = useMap(); // Get the Leaflet map instance
+  const map = useMap(); 
 
   useEffect(() => {
-    // Only update view if the center or zoom has genuinely changed
-    // or if the map needs to be re-rendered to this specific view.
-    // Using `flyTo` for a smoother animation.
+   
     if (center && map.getCenter().lat !== center[0] || map.getCenter().lng !== center[1] || map.getZoom() !== zoom) {
       map.flyTo(center, zoom, {
         animate: true,
-        duration: 1.5 // Animation duration in seconds
+        duration: 1.5 
       });
     }
   }, [center, zoom, map]);
 
-  return null; // This component doesn't render anything itself
+  return null;
 };
 
 const MapPage = () => {
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const navigate = useNavigate(); 
 
-  const [authToken, setAuthToken] = useState(null); // Token will be fetched from cookies
-  const [locations, setLocations] = useState([]); // Initialize as empty, fetch from API
+  const [authToken, setAuthToken] = useState(null); 
+  const [locations, setLocations] = useState([]); 
 
   const [newLocation, setNewLocation] = useState({
     name: '',
@@ -53,14 +68,14 @@ const MapPage = () => {
     lng: ''
   });
 
-  // State for the toast message
+  
   const [toastMessage, setToastMessage] = useState(null);
-  // State for the toast type (e.g., 'success', 'error') - useful for styling
+  
   const [toastType, setToastType] = useState('success');
 
-  // Initial map center - Can be updated dynamically if needed
-  const [mapCenter, setMapCenter] = useState([3.1390, 101.6869]); // Default to Kuala Lumpur
-  const [mapZoom, setMapZoom] = useState(13); // Default zoom level
+  
+  const [mapCenter, setMapCenter] = useState([3.1390, 101.6869]);
+  const [mapZoom, setMapZoom] = useState(13);
 
   // Function to show a toast message
   const showToast = (message, type = 'success', duration = 3000) => {
@@ -68,22 +83,23 @@ const MapPage = () => {
     setToastType(type);
     setTimeout(() => {
       setToastMessage(null);
-      setToastType('success'); // Reset to default type
+      setToastType('success'); 
     }, duration);
   };
 
-  // Effect to retrieve the authentication token from cookies on component mount
+
   useEffect(() => {
-    const token = getCookie('token');
-    console.log(token, "dddddd");
-     // Assuming your cookie name is 'token'
+
+const token = getCookie('token');
+console.log(token, "token is ");
+     
     if (token) {
       setAuthToken(token);
     } else {
       console.warn("No authentication token found in cookies. User might not be logged in.");
       showToast("Please log in to manage locations.", "error");
     }
-  }, []); // Empty dependency array means this runs once on mount
+  }, []); 
 
   // Function to fetch locations from the backend
   const fetchLocations = async () => {
@@ -107,17 +123,17 @@ const MapPage = () => {
         console.error('Failed to fetch locations:', errorData.message);
         showToast(`Failed to load locations: ${errorData.message}`, 'error');
         if (response.status === 401 || response.status === 403) {
-            // In a real app, you'd likely clear the token and redirect to login
+          
         }
         return;
       }
 
       const data = await response.json();
       const formattedLocations = data.locations.map(loc => ({
-        id: loc.id, // Assuming your DB table has an 'id' column
+        id: loc.id, 
         name: loc.name,
-        lat: parseFloat(loc.latitude), // Ensure they are numbers
-        lng: parseFloat(loc.longitude)  // Ensure they are numbers
+        lat: parseFloat(loc.latitude), 
+        lng: parseFloat(loc.longitude) 
       }));
       setLocations(formattedLocations);
     } catch (error) {
@@ -126,10 +142,9 @@ const MapPage = () => {
     }
   };
 
-  // Fetch locations when the authToken becomes available or changes
   useEffect(() => {
     fetchLocations();
-  }, [authToken]); // Dependency array: re-run when authToken changes
+  }, [authToken]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -137,6 +152,9 @@ const MapPage = () => {
       ...prev,
       [name]: value
     }));
+  };
+   const handleClick = () => {
+    navigate('/');
   };
 
   const handleAddLocation = async (e) => {
@@ -159,7 +177,7 @@ const MapPage = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${authToken}` // Pass the token
+          'Authorization': `Bearer ${authToken}` 
         },
         body: JSON.stringify({
           name: newLocation.name,
@@ -173,35 +191,35 @@ const MapPage = () => {
         console.error('Failed to add location:', errorData.message);
         showToast(`Failed to add location: ${errorData.message}`, 'error');
         if (response.status === 401 || response.status === 403) {
-            // In a real app, you'd likely clear the token and redirect to login
+            
         }
         return;
       }
 
       const data = await response.json();
-      showToast(data.message, 'success'); // Show success toast
-      setNewLocation({ name: '', lat: '', lng: '' }); // Clear form
-      fetchLocations(); // Re-fetch locations to update the map and list
+      showToast(data.message, 'success'); 
+      setNewLocation({ name: '', lat: '', lng: '' }); 
+      fetchLocations(); 
     } catch (error) {
       console.error('Error adding location:', error);
       showToast('Error adding location. Please try again.', 'error');
     }
   };
 
-  // This function is now responsible for updating both mapCenter and mapZoom
+  
   const handleLocationFocus = (lat, lng) => {
     setMapCenter([lat, lng]);
-    setMapZoom(15); // Adjust zoom level as desired when focusing on a location
+    setMapZoom(15); 
   };
 
-  // Function to handle redirection to the upload page
+ 
   const handleFileUploadRedirect = () => {
     navigate('/upload');
   };
 
   return (
     <div className="map-page-container">
-      {/* Toast Notification */}
+   
       {toastMessage && (
         <div className={`toast-notification toast-${toastType}`}>
           {toastMessage}
@@ -213,10 +231,10 @@ const MapPage = () => {
           <div className="logo-icon">
             <FaMapMarkerAlt className="icon" />
           </div>
-          <h1 className="logo-text">LocationHub</h1>
+          <h1 className="logo-text"  onClick={handleClick}>LocationHub</h1>
         </div>
         <div className="welcome-section"> {/* Added a wrapper for welcome text and button */}
-          <div className="welcome-text">Welcome, John Dee</div>
+
           <button className="file-upload-button" onClick={handleFileUploadRedirect}>
             <FaFileUpload /> Upload File
           </button>
@@ -311,7 +329,7 @@ const MapPage = () => {
         <div className="map-container">
           <MapContainer
             center={mapCenter}
-            zoom={mapZoom} // Use mapZoom state
+            zoom={mapZoom} 
             className="leaflet-container"
             whenReady={(map) => { /* Optional: do something when map is ready */ }}
           >
@@ -328,7 +346,7 @@ const MapPage = () => {
                 key={location.id}
                 position={[location.lat, location.lng]}
                 eventHandlers={{
-                  click: () => handleLocationFocus(location.lat, location.lng), // Also call handleLocationFocus on marker click
+                  click: () => handleLocationFocus(location.lat, location.lng), 
                 }}
               >
                 <Popup>

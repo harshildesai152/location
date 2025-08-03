@@ -7,24 +7,24 @@ const { getlogin } = require('../controllers/loginController');
 const { addLocation } = require('../controllers/LocationController');
 const { getUserLocations } = require('../controllers/getLocationController');
 const { uploadLocationFile } = require('../controllers/uploadLocationFileController');
+const {logoutUser} = require('../controllers/logoutController');
+const { authenticate } = require('../middleware/authenticate'); 
+const upload = require('../middleware/uploadMiddleware');
+const { checkAuth } = require('../controllers/checkAuthController');
 
-const { authenticate } = require('../middleware/authenticate'); // Correct path
-const upload = require('../middleware/uploadMiddleware'); // Multer configuration
-
-// Public routes (no authentication needed)
 router.post('/signup', getsignupList);
 router.post('/login', getlogin);
+router.post('/logout', logoutUser);
 
-// Authenticated routes
 router.post('/addLocation', authenticate, addLocation);
 router.get('/getLocation', authenticate, getUserLocations);
+router.get('/check-auth', checkAuth);
 
-// Upload ZIP file, extract abs.txt, and save data
-// Expecting form-data with key: 'file'
+
 router.post(
  '/uploadLocationFile',
  authenticate,
- upload, // Use the exported upload middleware directly
+ upload, 
  uploadLocationFile
 );
 module.exports = router;

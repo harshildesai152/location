@@ -2,7 +2,7 @@ const dbPromise = require('../config/db');
 
 const addLocation = async (req, res) => {
   const { name, latitude, longitude } = req.body;
-  const userId = req.user.userId; // ✅ req.user is set by middleware
+  const userId = req.user.userId; 
 
   if (!name || !latitude || !longitude) {
     return res.status(400).json({ message: 'All fields are required' });

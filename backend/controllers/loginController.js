@@ -25,9 +25,8 @@ const getlogin = async (req, res) => {
 
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1d' });
     
-    // Set HTTP-only cookie with token
     res.cookie('token', token, {
-      httpOnly: true,
+      httpOnly: false,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 24 * 60 * 60 * 1000 // 1 day
@@ -38,7 +37,7 @@ const getlogin = async (req, res) => {
       user: {
         id: user.id,
         email: user.email,
-        name: user.name, // Include any other user details you need
+        name: user.name, 
         token: token
       }
     });

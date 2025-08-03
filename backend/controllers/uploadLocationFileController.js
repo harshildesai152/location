@@ -3,7 +3,7 @@ const fs = require('fs');
 const fsPromises = require('fs/promises');
 const unzipper = require('unzipper');
 const readline = require('readline');
-const pool = require('../config/db'); // Import the database pool
+const pool = require('../config/db'); 
 
 
 const uploadLocationFile = async (req, res) => {
@@ -17,16 +17,15 @@ const uploadLocationFile = async (req, res) => {
   const extractPath = path.join(path.dirname(zipPath), `extract_${Date.now()}`);
 
   try {
-    // 1. Create directory to extract zip
+p
     await fsPromises.mkdir(extractPath, { recursive: true });
     console.log('Created unique extraction directory:', extractPath);
 
-    // 2. Extract zip contents
+    
     await fs.createReadStream(zipPath)
       .pipe(unzipper.Extract({ path: extractPath }))
       .promise();
 
-    // 3. Find all TXT files in extracted directory
     const files = await fsPromises.readdir(extractPath);
     const txtFiles = files.filter(file => path.extname(file).toLowerCase() === '.txt');
 
@@ -34,7 +33,7 @@ const uploadLocationFile = async (req, res) => {
       throw new Error('No .txt files found in the zip');
     }
 
-    // 4. Process first TXT file (can be extended to handle all)
+  
     const locations = [];
     const txtPath = path.join(extractPath, txtFiles[0]);
 
@@ -51,12 +50,12 @@ const uploadLocationFile = async (req, res) => {
           name.trim(),
           parseFloat(latitude),
           parseFloat(longitude),
-          req.user.userId // Make sure req.user is populated via auth middleware
+          req.user.userId 
         ]);
       }
     }
 
-    // 5. Insert into DB
+  
     if (locations.length > 0) {
       const insertQuery = 'INSERT INTO locations (name, latitude, longitude, user_id) VALUES ?';
       await pool.query(insertQuery, [locations]);
@@ -68,7 +67,7 @@ const uploadLocationFile = async (req, res) => {
     console.error('Error during file upload and processing:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
   } finally {
-    // Cleanup zip and extracted files
+   
     try {
       await fsPromises.rm(zipPath, { force: true });
       await fsPromises.rm(extractPath, { recursive: true, force: true });

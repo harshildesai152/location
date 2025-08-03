@@ -10,8 +10,12 @@ import {
   faEyeSlash 
 } from '@fortawesome/free-solid-svg-icons';
 import './LoginPage.css';
+// import { useSelector,useDispatch } from 'react-redux';
+// import { setUser } from '../store/userSlice'; // Adjust the import path as necessary
 
 const LoginPage = () => {
+    // const dispatch = useDispatch();
+    // const selector = useSelector((state) => state.user);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -22,7 +26,7 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Basic validation
+
     if (!email || !password) {
       toast.error('Please enter both email and password');
       return;
@@ -36,7 +40,7 @@ const LoginPage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include', // Necessary for cookies
+        credentials: 'include', 
         body: JSON.stringify({ email, password }),
       });
 
@@ -48,12 +52,15 @@ const LoginPage = () => {
 
       toast.success('Login successful!');
       
-      // Store user data in localStorage (excluding sensitive info)
+     
       if (data.user) {
         localStorage.setItem('user', JSON.stringify(data.user));
       }
+    
 
-      // Redirect to home/dashboard
+      
+
+    
       navigate('/');
 
     } catch (error) {

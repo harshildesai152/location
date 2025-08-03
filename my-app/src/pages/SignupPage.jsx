@@ -1,11 +1,11 @@
 // src/components/SignupPage.jsx
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
-import { toast } from 'sonner'; // Import toast for notifications (Toaster itself is rendered globally)
+import { useNavigate } from 'react-router-dom'; 
+import { toast } from 'sonner'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faEnvelope, faLock, faEye, faEyeSlash, faUserAlt } from '@fortawesome/free-solid-svg-icons';
 
-import './SignupPage.css'; // Import the CSS file
+import './SignupPage.css'; 
 
 const SignupPage = () => {
     const [fullName, setFullName] = useState('');
@@ -14,11 +14,11 @@ const SignupPage = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [loading, setLoading] = useState(false); // State for loading indicator
+    const [loading, setLoading] = useState(false); 
 
-    const navigate = useNavigate(); // Hook for navigation
+    const navigate = useNavigate(); 
 
-    const handleSubmit = async (e) => { // Make handleSubmit asynchronous
+    const handleSubmit = async (e) => { 
         e.preventDefault();
         setLoading(true); // Start loading
 
@@ -43,26 +43,26 @@ const SignupPage = () => {
 
             const data = await response.json();
 
-            if (response.ok) { // Check if the response status is 2xx (success)
+            if (response.ok) { 
                 toast.success(data.message || 'Signup successful!');
-                // Redirect to login page after a short delay or immediately
+                
                 setTimeout(() => {
-                    navigate('/login'); // Assuming '/login' is your login page route
-                }, 1500); // Redirect after 1.5 seconds
+                    navigate('/login'); 
+                }, 1500); 
             } else {
-                // Handle API errors (e.g., email already registered, validation errors)
+                
                 toast.error(data.message || 'Signup failed. ' + (data.message || 'Please try again.'));
             }
         } catch (error) {
             console.error('Error during signup:', error);
-            // Check if the error is a TypeError (typically for network issues like CORS or server down)
+            
             if (error instanceof TypeError && error.message === 'Failed to fetch') {
                 toast.error('Network error: Could not connect to the server. Please ensure the backend is running and accessible.');
             } else {
                 toast.error('An unexpected error occurred during signup.');
             }
         } finally {
-            setLoading(false); // End loading
+            setLoading(false); 
         }
     };
 
@@ -93,7 +93,7 @@ const SignupPage = () => {
                                     value={fullName}
                                     onChange={(e) => setFullName(e.target.value)}
                                     required
-                                    disabled={loading} // Disable input while loading
+                                    disabled={loading}
                                 />
                             </div>
                         </div>
@@ -109,7 +109,7 @@ const SignupPage = () => {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     required
-                                    disabled={loading} // Disable input while loading
+                                    disabled={loading} 
                                 />
                             </div>
                         </div>
@@ -125,7 +125,7 @@ const SignupPage = () => {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     required
-                                    disabled={loading} // Disable input while loading
+                                    disabled={loading}
                                 />
                                 <FontAwesomeIcon
                                     icon={showPassword ? faEye : faEyeSlash}
@@ -146,7 +146,7 @@ const SignupPage = () => {
                                     value={confirmPassword}
                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                     required
-                                    disabled={loading} // Disable input while loading
+                                    disabled={loading} 
                                 />
                                 <FontAwesomeIcon
                                     icon={showConfirmPassword ? faEye : faEyeSlash}
@@ -166,7 +166,7 @@ const SignupPage = () => {
                     </p>
                 </div>
             </div>
-            {/* REMOVED: Toaster is no longer here */}
+           
         </div>
     );
 };
