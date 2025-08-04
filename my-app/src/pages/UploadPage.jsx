@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 const UploadPage = () => {
     const navigate = useNavigate();
-    const [selectedFile, setSelectedFile] = useState(null);
+    const [selectedFile, setSelectedFile] = useState(null); 
     const [isDragOver, setIsDragOver] = useState(false);
     const [uploading, setUploading] = useState(false);
     const [countdown, setCountdown] = useState(0);
