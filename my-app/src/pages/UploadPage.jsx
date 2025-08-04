@@ -1,30 +1,30 @@
-import React, { useState, useEffect } from 'react'; 
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaUpload, FaFileAlt, FaMapMarkerAlt, FaDownload } from 'react-icons/fa';
+import { ToastContainer, toast } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css'; 
 import './UploadPage.css';
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"; 
 
 const UploadPage = () => {
     const navigate = useNavigate();
     const [selectedFile, setSelectedFile] = useState(null);
     const [isDragOver, setIsDragOver] = useState(false);
     const [uploading, setUploading] = useState(false);
-    const [uploadMessage, setUploadMessage] = useState('');
-    const [isError, setIsError] = useState(false);
-    const [countdown, setCountdown] = useState(0); 
+    const [countdown, setCountdown] = useState(0);
+    const [uploadSuccess, setUploadSuccess] = useState(false); 
 
-    
     useEffect(() => {
         if (countdown > 0) {
             const timer = setTimeout(() => {
                 setCountdown(countdown - 1);
-            }, 1000); 
-            return () => clearTimeout(timer); 
-        } else if (countdown === 0 && uploadMessage.includes('successfully') && !isError) {
-            
+            }, 1000);
+            return () => clearTimeout(timer);
+        } else if (countdown === 0 && uploadSuccess) { 
             navigate('/map');
         }
-    }, [countdown, uploadMessage, isError, navigate]); 
+    }, [countdown, uploadSuccess, navigate]);
+
 
     const getCookie = (name) => {
         const value = `; ${document.cookie}`;
@@ -37,9 +37,9 @@ const UploadPage = () => {
         const file = event.target.files[0];
         if (file) {
             setSelectedFile(file);
-            setUploadMessage('');
-            setIsError(false);
-            setCountdown(0); 
+            toast.dismiss(); 
+            setCountdown(0);
+            setUploadSuccess(false); 
         }
     };
 
@@ -49,9 +49,9 @@ const UploadPage = () => {
         const file = event.dataTransfer.files[0];
         if (file) {
             setSelectedFile(file);
-            setUploadMessage('');
-            setIsError(false);
-            setCountdown(0); 
+            toast.dismiss();
+            setCountdown(0);
+            setUploadSuccess(false); 
         }
     };
 
@@ -71,9 +71,10 @@ const UploadPage = () => {
     const handleViewMapClick = () => {
         navigate('/map');
     };
-     const handleClick = () => {
-    navigate('/');
-  };
+
+    const handleClick = () => {
+        navigate('/'); 
+    };
 
     const handleDownloadSample = () => {
         const sampleData = "Name,Latitude,Longitude\nSuria KLCC,3.157324,101.712198\nZoo Negara,3.2195416,101.75929564";
@@ -90,15 +91,14 @@ const UploadPage = () => {
 
     const handleUploadFile = async () => {
         if (!selectedFile) {
-            setUploadMessage("Please select a file first.");
-            setIsError(true);
+            toast.error("Please select a file first.");
             return;
         }
 
         setUploading(true);
-        setUploadMessage("Uploading...");
-        setIsError(false);
-        setCountdown(0); 
+        setUploadSuccess(false);
+        toast.info("Uploading file...", { autoClose: false, toastId: 'uploading' }); 
+        setCountdown(0);
 
         const formData = new FormData();
         formData.append('file', selectedFile);
@@ -116,21 +116,28 @@ const UploadPage = () => {
 
             const data = await response.json();
 
+            toast.dismiss('uploading'); 
+
             if (response.ok) {
-                setUploadMessage(data.message || 'File uploaded successfully!');
-                setIsError(false);
-                setSelectedFile(null);
+                toast.success(data.message || 'File uploaded successfully!');
+                setSelectedFile(null); 
+                setUploadSuccess(true); 
                 setCountdown(3); 
             } else {
-                setUploadMessage(data.message || 'Upload failed.');
-                setIsError(true);
-                setCountdown(0); 
+                toast.error(data.message || 'Upload failed.');
+
+                if (data.errors && Array.isArray(data.errors) && data.errors.length > 0) {
+                    data.errors.forEach(err => {
+                        toast.error(err, { autoClose: 5000 }); 
+                    });
+                }
+                setCountdown(0);
             }
         } catch (error) {
             console.error('Error during upload:', error);
-            setUploadMessage('Network error or server unreachable.');
-            setIsError(true);
-            setCountdown(0); 
+            toast.dismiss('uploading');
+            toast.error('Network error or server unreachable. Please try again.');
+            setCountdown(0);
         } finally {
             setUploading(false);
         }
@@ -138,17 +145,18 @@ const UploadPage = () => {
 
     return (
         <div className="upload-page-container">
+            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
             <aside className="upload-sidebar">
                 <div className="logo-container">
                     <div className="logo-icon">
                         <FaMapMarkerAlt className="icon" />
                     </div>
                     <h1 className="logo-text" onClick={handleClick} style={{ cursor: 'pointer' }}>
-                     LocationHub
+                        LocationHub
                     </h1>
                 </div>
                 <div className="upload-navigation">
-                  
+
                     <nav>
                         <ul>
                             <li><a href="/" onClick={(e) => { e.preventDefault(); navigate('/map'); }}>Map</a></li>
@@ -158,7 +166,7 @@ const UploadPage = () => {
                 </div>
                 <div className="logout-section">
                     <FaFileAlt className="logout-icon" />
-                    {/* <span>Logout</span> */}
+                    
                 </div>
             </aside>
 
@@ -169,7 +177,7 @@ const UploadPage = () => {
                 </header>
 
                 <div className="upload-cards-container">
-                  
+
                     <div className="upload-card file-upload-card">
                         <div className="card-header">
                             <FaUpload className="card-icon" />
@@ -205,16 +213,15 @@ const UploadPage = () => {
                         >
                             {uploading ? 'Uploading...' : 'Upload'}
                         </button>
-                        {uploadMessage && (
-                            <p className={`upload-message ${isError ? 'error' : 'success'}`}>
-                                {uploadMessage}
-                                {countdown > 0 && ` Redirecting in ${countdown}...`} {/* Display countdown */}
+                        {countdown > 0 && uploadSuccess && ( 
+                            <p className="upload-message success">
+                                Redirecting to map in {countdown}...
                             </p>
                         )}
                     </div>
 
                     <div className="upload-info-cards">
-                      
+
                         <div className="upload-card format-requirements-card">
                             <div className="card-header">
                                 <FaFileAlt className="card-icon" />
@@ -227,7 +234,7 @@ const UploadPage = () => {
                             </ul>
                         </div>
 
-                      
+
                         <div className="upload-card sample-file-card">
                             <div className="card-header">
                                 <FaFileAlt className="card-icon" />

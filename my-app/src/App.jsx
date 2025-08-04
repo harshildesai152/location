@@ -6,7 +6,7 @@ import UploadPage from './pages/UploadPage';
 import SignupPage from './pages/SignupPage';
 import LoginPage from './pages/LoginPage';
 import AuthRoute from '../components/AuthRoute';
-
+import { Toaster } from 'sonner';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -45,19 +45,20 @@ const App = () => {
   }
 
   return (
-    <Routes>
-      <Route path="/" element={<Home isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />} />
-      
-      
-    
-        <Route path="/map" element={<MapPage />} />
-        <Route path="/upload" element={<UploadPage />} />
-     
-      <Route element={<AuthRoute isAuthenticated={isAuthenticated} />}>
-        <Route path="/login" element={<LoginPage setIsAuthenticated={setIsAuthenticated} />} />
-        <Route path="/signup" element={<SignupPage setIsAuthenticated={setIsAuthenticated} />} />
-      </Route>
-    </Routes>
+    <>
+     <Toaster richColors position="top-center" />
+   <Routes>
+  <Route path="/" element={<Home isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />} />
+
+  <Route path="/login" element={<LoginPage setIsAuthenticated={setIsAuthenticated} />} />
+  <Route path="/signup" element={<SignupPage setIsAuthenticated={setIsAuthenticated} />} />
+
+  <Route element={<AuthRoute isAuthenticated={isAuthenticated} />}>
+    <Route path="/map" element={<MapPage />} />
+    <Route path="/upload" element={<UploadPage />} />
+  </Route>
+</Routes>
+   </>
   );
 };
 
