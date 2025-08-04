@@ -293,7 +293,7 @@ const checkAuthStatus = async () => {
           marginRight: 'auto',
           lineHeight: '1.6'
         }}>
-          Create interactive maps, import locations from files, and collaborate with your team — all in one secure platform.
+          Create interactive maps, import locations from files
         </motion.p>
         <motion.div variants={itemVariants}>
           <motion.button
@@ -468,7 +468,7 @@ const checkAuthStatus = async () => {
           boxShadow: '0 15px 40px rgba(52, 152, 219, 0.3)'
         }}
       >
-        <h2 style={{ fontSize: '32px', marginBottom: '20px', fontWeight: '700' }}>Ready to transform your location data?</h2>
+        <h2 style={{ fontSize: '32px', marginBottom: '20px', fontWeight: '700' }}>location manager</h2>
         <p style={{
           fontSize: '18px',
           marginBottom: '30px',
@@ -478,7 +478,7 @@ const checkAuthStatus = async () => {
           opacity: 0.9,
           lineHeight: '1.6'
         }}>
-          Join thousands of businesses already using LocationHub to visualize, analyze, and share their location data.
+          {/* Join thousands of businesses already using LocationHub to visualize, analyze, and share their location data. */}
         </p>
         {/* <motion.button
           whileHover={{ scale: 1.05, backgroundColor: 'white', color: '#3498db' }}
