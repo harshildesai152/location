@@ -23,8 +23,8 @@ Open two terminals:
 
 ▶ Terminal 1 (Frontend):
 --------------------------
-cd my-app
-npm install
+```cd my-app```
+```npm install```
 
 ▶ Terminal 2 (Backend):
 --------------------------
