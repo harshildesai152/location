@@ -1,19 +1,23 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSignInAlt,
   faEnvelope,
   faLock,
   faEye,
-  faEyeSlash
-} from '@fortawesome/free-solid-svg-icons';
-import './LoginPage.css';
+  faEyeSlash,
+} from "@fortawesome/free-solid-svg-icons";
+import "./LoginPage.css";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/userSlice";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+  // const selector = useSelector();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -23,19 +27,19 @@ const LoginPage = () => {
     e.preventDefault();
 
     if (!email || !password) {
-      toast.error('Please enter both email and password');
+      toast.error("Please enter both email and password");
       return;
     }
 
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3000/api/login', {
-        method: 'POST',
+      const response = await fetch("http://localhost:3000/api/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        credentials: 'include',
+        credentials: "include",
         body: JSON.stringify({ email, password }),
       });
 
@@ -43,19 +47,26 @@ const LoginPage = () => {
 
       if (!response.ok) {
         // Show toast message for wrong email/password
-        toast.error(data.message || 'Invalid email or password');
+        toast.error(data.message || "Invalid email or password");
         setLoading(false);
         return;
+      } else {
+        console.log("Data is ", data.user);
+        console.log("Setting the user into redux");
+        dispatch(
+          setUser({
+            id: data.user.id,
+            name: data.user.name,
+            email: data.user.email,
+            token: data.user.token,
+          })
+        );
+        toast.success("Login successful!");
+        navigate("/");
       }
-
-      toast.success('Login successful!');
-
-     
-
-      navigate('/');
     } catch (error) {
-      console.error('Login error:', error);
-      toast.error(error.message || 'An error occurred during login');
+      console.error("Login error:", error);
+      toast.error(error.message || "An error occurred during login");
     } finally {
       setLoading(false);
     }
@@ -93,7 +104,7 @@ const LoginPage = () => {
               <div className="input-wrapper">
                 <FontAwesomeIcon icon={faLock} className="input-icon" />
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   placeholder="Enter your password"
                   value={password}
@@ -109,17 +120,13 @@ const LoginPage = () => {
               </div>
             </div>
 
-            <button
-              type="submit"
-              className="login-button"
-              disabled={loading}
-            >
-              {loading ? <span className="loading-spinner"></span> : 'Login'}
+            <button type="submit" className="login-button" disabled={loading}>
+              {loading ? <span className="loading-spinner"></span> : "Login"}
             </button>
           </form>
 
           <p className="login-footer">
-            Don't have an account?{' '}
+            Don't have an account?{" "}
             <a href="/signup" className="signup-link">
               Sign up here
             </a>
